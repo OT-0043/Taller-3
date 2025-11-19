@@ -274,3 +274,166 @@ void cargarComentarios() {
     }
     archivo.close();
 }
+
+//ADPB
+
+bool iniciarSesion() {
+    string correo, contraseña;
+    cout << "=== INICIAR SESION ===" << endl;
+    cout << "Correo electronico: ";
+    cin >> correo;
+    cout << "Contraseña: ";
+    cin >> contraseña;
+    
+    for (size_t i = 0; i < usuarios.size(); i++) {
+        if (usuarios[i].correoElectronico == correo && usuarios[i].contraseña == contraseña) {
+            usuarioActual = usuarios[i];
+            cout << "\nBienvenido, " << usuarios[i].nombre << "!" << endl;
+            return true;
+        }
+    }
+    
+    cout << "\nUsuario invalido!" << endl;
+    cout << "Verifica que hayas escrito correctamente el correo y contraseña." << endl;
+    return false;
+}
+
+void listarProductosBajoStock() {
+    cout << "\n=== PRODUCTOS CON STOCK BAJO (<15 unidades) ===" << endl;
+    bool encontrados = false;
+    
+    for (size_t i = 0; i < productos.size(); i++) {
+        if (productos[i].stock < 15) {
+            cout << "ID: " << productos[i].idProducto << " | " << productos[i].nombre 
+                 << " | Stock: " << productos[i].stock << " | Precio: $" << productos[i].precio << endl;
+            encontrados = true;
+        }
+    }
+    
+    if (!encontrados) {
+        cout << "No hay productos con stock bajo." << endl;
+    }
+}
+
+void listarComentariosDesdeFecha() {
+    string fecha;
+    cout << "\nIngrese la fecha (YYYY-MM-DD): ";
+    cin >> fecha;
+    
+    cout << "\n=== COMENTARIOS DESDE " << fecha << " ===" << endl;
+    bool encontrados = false;
+    
+    for (size_t i = 0; i < comentarios.size(); i++) {
+        if (comentarios[i].fecha >= fecha) {
+            cout << "Fecha: " << comentarios[i].fecha << " | Producto: " << comentarios[i].producto 
+                 << " | Usuario: " << comentarios[i].usuario << endl;
+            cout << "Comentario: " << comentarios[i].comentario << endl << endl;
+            encontrados = true;
+        }
+    }
+    
+    if (!encontrados) {
+        cout << "No hay comentarios desde esa fecha." << endl;
+    }
+}
+
+void listarUsuarios() {
+    cout << "\n=== LISTA DE USUARIOS ===" << endl;
+    for (size_t i = 0; i < usuarios.size(); i++) {
+        cout << "ID: " << usuarios[i].idUsuario << " | Nombre: " << usuarios[i].nombre 
+             << " | Correo: " << usuarios[i].correoElectronico << " | Direccion: " 
+             << usuarios[i].direccion << " | Metodo Pago: " << usuarios[i].metodoDePago << endl;
+    }
+}
+
+void agregarAlCarrito() {
+    int id;
+    cout << "\n=== AGREGAR AL CARRITO ===" << endl;
+    cout << "ID del producto: ";
+    cin >> id;
+    
+    for (size_t i = 0; i < productos.size(); i++) {
+        if (productos[i].idProducto == id) {
+            carrito.productos.push_back(productos[i]);
+            carrito.subtotal += productos[i].precio;
+            cout << "Producto '" << productos[i].nombre << "' agregado al carrito!" << endl;
+            return;
+        }
+    }
+    cout << "Producto no encontrado!" << endl;
+}
+
+void listarCarrito() {
+    cout << "\n=== CARRITO DE COMPRAS ===" << endl;
+    if (carrito.productos.empty()) {
+        cout << "El carrito esta vacio." << endl;
+        return;
+    }
+    
+    for (size_t i = 0; i < carrito.productos.size(); i++) {
+        cout << "Producto: " << carrito.productos[i].nombre << " | Precio: $" << carrito.productos[i].precio << endl;
+    }
+    cout << "Subtotal: $" << carrito.subtotal << endl;
+}
+
+void guardarCarrito() {
+    string nombreArchivo = "carrito_" + string(1, '0' + usuarioActual.idUsuario) + ".txt";
+    ofstream archivo(nombreArchivo.c_str());
+    archivo << "Carrito de: " << usuarioActual.nombre << endl;
+    archivo << "Productos en carrito:" << endl;
+    
+    for (size_t i = 0; i < carrito.productos.size(); i++) {
+        archivo << carrito.productos[i].nombre << " - $" << carrito.productos[i].precio << endl;
+    }
+    
+    archivo << "Subtotal: $" << carrito.subtotal << endl;
+    archivo.close();
+    cout << "Carrito guardado en archivo!" << endl;
+}
+
+void menuPrincipal() {
+    int opcion;
+    
+    do {
+        cout << "\n=== MENU PRINCIPAL ===" << endl;
+        cout << "1. Listar productos con stock bajo" << endl;
+        cout << "2. Listar comentarios desde fecha" << endl;
+        cout << "3. Listar usuarios" << endl;
+        cout << "4. Agregar producto al carrito" << endl;
+        cout << "5. Listar carrito" << endl;
+        cout << "6. Guardar carrito en archivo" << endl;
+        cout << "0. Salir" << endl;
+        cout << "Seleccione una opcion: ";
+        cin >> opcion;
+        
+        switch (opcion) {
+            case 1: listarProductosBajoStock(); break;
+            case 2: listarComentariosDesdeFecha(); break;
+            case 3: listarUsuarios(); break;
+            case 4: agregarAlCarrito(); break;
+            case 5: listarCarrito(); break;
+            case 6: guardarCarrito(); break;
+            case 0: cout << "Hasta luego!" << endl; break;
+            default: cout << "Opcion invalida!" << endl;
+        }
+    } while (opcion != 0);
+}
+
+int main() {
+    // Inicializar carrito
+    carrito.idCarrito = 1;
+    carrito.subtotal = 0;
+    carrito.impuestos = 0;
+    
+    // Cargar datos
+    cargarUsuarios();
+    cargarProductos();
+    cargarComentarios();
+    
+    // Sistema de login
+    if (iniciarSesion()) {
+        menuPrincipal();
+    }
+    
+    return 0;
+}
