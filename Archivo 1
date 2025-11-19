@@ -115,3 +115,87 @@ void cargarUsuarios() {
                 u.contraseña = u.contraseña.substr(1);
             }
         }
+
+// Leer direccion
+        if (getline(ss, u.direccion, ',')) {
+            if (!u.direccion.empty() && u.direccion[0] == ' ') {
+                u.direccion = u.direccion.substr(1);
+            }
+        }
+       
+        // Leer metodoDePago
+        if (getline(ss, u.metodoDePago)) {
+            if (!u.metodoDePago.empty() && u.metodoDePago[0] == ' ') {
+                u.metodoDePago = u.metodoDePago.substr(1);
+            }
+        }
+       
+        usuarios.push_back(u);
+    }
+    archivo.close();
+}
+
+void cargarProductos() {
+    ifstream archivo("Productos.txt");
+    string linea;
+   
+    while (getline(archivo, linea)) {
+        stringstream ss(linea);
+        string token;
+        Producto p;
+       
+        // Leer idProducto
+        if (getline(ss, token, ',')) {
+            p.idProducto = stringToInt(token);
+        }
+       
+        // Leer nombre
+        if (getline(ss, p.nombre, ',')) {
+            if (!p.nombre.empty() && p.nombre[0] == ' ') {
+                p.nombre = p.nombre.substr(1);
+            }
+        }
+       
+        // Leer descripcion
+        if (getline(ss, p.descripcion, ',')) {
+            if (!p.descripcion.empty() && p.descripcion[0] == ' ') {
+                p.descripcion = p.descripcion.substr(1);
+            }
+        }
+       
+        // Leer precio
+        if (getline(ss, token, ',')) {
+            p.precio = stringToDouble(token);
+        }
+       
+        // Leer stock
+        if (getline(ss, token)) {
+            p.stock = stringToInt(token);
+        }
+       
+        productos.push_back(p);
+    }
+    archivo.close();
+}
+
+void cargarComentarios() {
+    ifstream archivo("Comentarios.txt");
+    string linea;
+   
+    while (getline(archivo, linea)) {
+        stringstream ss(linea);
+        string token;
+        Comentario c;
+       
+        // Leer idComentario
+        if (getline(ss, token, ',')) {
+            c.idComentario = stringToInt(token);
+        }
+       
+        // Leer producto
+        if (getline(ss, c.producto, ',')) {
+            if (!c.producto.empty() && c.producto[0] == ' ') {
+                c.producto = c.producto.substr(1);
+            }
+        }
+       
