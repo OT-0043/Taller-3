@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <fstream>
+#include <sstream>
+
+using namespace std;
+
+// Función para convertir string a int
+int stringToInt(const string& str) {
+    int result = 0;
+    for (size_t i = 0; i < str.length(); i++) {
+        char c = str[i];
+        if (c >= '0' && c <= '9') {
+            result = result * 10 + (c - '0');
+        }
+    }
+    return result;
+}
+
+// Función para convertir string a double
+double stringToDouble(const string& str) {
+    double result = 0.0;
+    double decimal = 0.0;
+    bool afterDecimal = false;
+    double decimalMultiplier = 0.1;
+    
+    for (size_t i = 0; i < str.length(); i++) {
+        char c = str[i];
+        if (c == '.') {
+            afterDecimal = true;
+        } else if (c >= '0' && c <= '9') {
+            if (!afterDecimal) {
+                result = result * 10 + (c - '0');
+            } else {
+                decimal += (c - '0') * decimalMultiplier;
+                decimalMultiplier *= 0.1;
+            }
+        }
+    }
+    return result + decimal;
+}
+
+struct Producto {
+    int idProducto;
+    string nombre;
+    string descripcion;
+    double precio;
+    int stock;
+}; //agrego parte de la funcionalidad del codigo.
