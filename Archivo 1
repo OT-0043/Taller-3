@@ -199,3 +199,78 @@ void cargarComentarios() {
             }
         }
        
+// Leer nombre
+        if (getline(ss, p.nombre, ',')) {
+            if (!p.nombre.empty() && p.nombre[0] == ' ') {
+                p.nombre = p.nombre.substr(1);
+            }
+        }
+        
+        // Leer descripcion
+        if (getline(ss, p.descripcion, ',')) {
+            if (!p.descripcion.empty() && p.descripcion[0] == ' ') {
+                p.descripcion = p.descripcion.substr(1);
+            }
+        }
+        
+        // Leer precio
+        if (getline(ss, token, ',')) {
+            p.precio = stringToDouble(token);
+        }
+        
+        // Leer stock
+        if (getline(ss, token)) {
+            p.stock = stringToInt(token);
+        }
+        
+        productos.push_back(p);
+    }
+    archivo.close();
+}
+
+void cargarComentarios() {
+    ifstream archivo("Comentarios.txt");
+    string linea;
+    
+    while (getline(archivo, linea)) {
+        stringstream ss(linea);
+        string token;
+        Comentario c;
+        
+        // Leer idComentario
+        if (getline(ss, token, ',')) {
+            c.idComentario = stringToInt(token);
+        }
+        
+        // Leer producto
+        if (getline(ss, c.producto, ',')) {
+            if (!c.producto.empty() && c.producto[0] == ' ') {
+                c.producto = c.producto.substr(1);
+            }
+        }
+        
+        // Leer usuario
+        if (getline(ss, c.usuario, ',')) {
+            if (!c.usuario.empty() && c.usuario[0] == ' ') {
+                c.usuario = c.usuario.substr(1);
+            }
+        }
+        
+        // Leer comentario
+        if (getline(ss, c.comentario, ',')) {
+            if (!c.comentario.empty() && c.comentario[0] == ' ') {
+                c.comentario = c.comentario.substr(1);
+            }
+        }
+        
+        // Leer fecha
+        if (getline(ss, c.fecha)) {
+            if (!c.fecha.empty() && c.fecha[0] == ' ') {
+                c.fecha = c.fecha.substr(1);
+            }
+        }
+        
+        comentarios.push_back(c);
+    }
+    archivo.close();
+}
