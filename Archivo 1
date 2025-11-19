@@ -48,3 +48,70 @@ struct Producto {
     double precio;
     int stock;
 }; //agrego parte de la funcionalidad del codigo.
+
+struct Usuario {
+    int idUsuario;
+    string nombre;
+    string correoElectronico;
+    string contraseña;
+    string direccion;
+    string metodoDePago;
+};
+
+struct Comentario {
+    int idComentario;
+    string producto;
+    string usuario;
+    string comentario;
+    string fecha;
+};
+
+struct CarritoDeCompras {
+    int idCarrito;
+    vector<Producto> productos;
+    double subtotal;
+    double impuestos;
+};
+
+vector<Usuario> usuarios;
+vector<Producto> productos;
+vector<Comentario> comentarios;
+CarritoDeCompras carrito;
+Usuario usuarioActual;
+
+void cargarUsuarios() {
+    ifstream archivo("Usuarios.txt");
+    string linea;
+   
+    // Leer todas las líneas
+    while (getline(archivo, linea)) {
+        stringstream ss(linea);
+        string token;
+        Usuario u;
+       
+        // Leer idUsuario
+        if (getline(ss, token, ',')) {
+            u.idUsuario = stringToInt(token);
+        }
+       
+        // Leer nombre
+        if (getline(ss, u.nombre, ',')) {
+            // Limpiar espacios extras
+            if (!u.nombre.empty() && u.nombre[0] == ' ') {
+                u.nombre = u.nombre.substr(1);
+            }
+        }
+       
+        // Leer correoElectronico
+        if (getline(ss, u.correoElectronico, ',')) {
+            if (!u.correoElectronico.empty() && u.correoElectronico[0] == ' ') {
+                u.correoElectronico = u.correoElectronico.substr(1);
+            }
+        }
+       
+        // Leer contraseña
+        if (getline(ss, u.contraseña, ',')) {
+            if (!u.contraseña.empty() && u.contraseña[0] == ' ') {
+                u.contraseña = u.contraseña.substr(1);
+            }
+        }
