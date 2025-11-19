@@ -111,8 +111,8 @@ void cargarUsuarios() {
        
         // Leer contraseña
         if (getline(ss, u.contraseña, ',')) {
-            if (!u.contraseña.empty() && u.contraseña[0] == ' ') {
-                u.contraseña = u.contraseña.substr(1);
+            if (!u.contraseña.empty() && u.contrasena[0] == ' ') {
+                u.contrasena = u.contraseña.substr(1);
             }
         }
 
@@ -278,15 +278,15 @@ void cargarComentarios() {
 //ADPB
 
 bool iniciarSesion() {
-    string correo, contraseña;
+    string correo, contrasena;
     cout << "=== INICIAR SESION ===" << endl;
     cout << "Correo electronico: ";
     cin >> correo;
     cout << "Contraseña: ";
-    cin >> contraseña;
+    cin >> contrasena;
     
     for (size_t i = 0; i < usuarios.size(); i++) {
-        if (usuarios[i].correoElectronico == correo && usuarios[i].contraseña == contraseña) {
+        if (usuarios[i].correoElectronico == correo && usuarios[i].contrasena == contrasena) {
             usuarioActual = usuarios[i];
             cout << "\nBienvenido, " << usuarios[i].nombre << "!" << endl;
             return true;
