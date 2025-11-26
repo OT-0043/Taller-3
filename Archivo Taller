@@ -381,6 +381,50 @@ int main() {
     if (iniciarSesion()) {
         menuPrincipal();
     }
-   
+
+   void reporteProductosMenorStock() {
+    cout << "\n=== 5 PRODUCTOS CON MENOR STOCK ===" << endl;
+
+    // Crear copia del vector para no alterar el original
+    vector<Producto> copia = productos;
+
+    // Ordenar por stock ascendente
+    sort(copia.begin(), copia.end(), [](Producto a, Producto b) {
+        return a.stock < b.stock;
+    });
+
+    // Mostrar los primeros 5
+    int limite = min(5, (int)copia.size());
+
+    for (int i = 0; i < limite; i++) {
+        cout << "ID: " << copia[i].idProducto
+             << " | Nombre: " << copia[i].nombre
+             << " | Stock: " << copia[i].stock << endl;
+    }
+}
+void reportePrecioMinMax() {
+    if (productos.empty()) {
+        cout << "No hay productos cargados." << endl;
+        return;
+    }
+
+    double precioMin = productos[0].precio;
+    double precioMax = productos[0].precio;
+
+    for (size_t i = 1; i < productos.size(); i++) {
+        if (productos[i].precio < precioMin) precioMin = productos[i].precio;
+        if (productos[i].precio > precioMax) precioMax = productos[i].precio;
+    }
+
+    cout << "\n=== PRECIO MÍNIMO Y MÁXIMO DE PRODUCTOS ===" << endl;
+    cout << "Precio mínimo: $" << precioMin << endl;
+    cout << "Precio máximo: $" << precioMax << endl;
+}
+cout << "7. Reporte: 5 productos con menor stock" << endl;
+        cout << "8. Reporte: cantidad de comentarios por fecha" << endl;
+        cout << "9. Reporte: precio mínimo y máximo" << endl;
+case 7: reporteProductosMenorStock(); break;
+            case 8: reporteCantidadComentariosPorFecha(); break;
+            case 9: reportePrecioMinMax(); break;
     return 0;
 }
